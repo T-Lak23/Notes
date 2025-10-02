@@ -44,7 +44,11 @@ export const userRegister = async (req, res, next) => {
     });
     await newUser.save();
     generateToken(newUser._id, res);
-    await fs.unlink(file?.path);
+    if (file?.path) {
+      await fs
+        .unlink(file.path)
+        .catch((err) => console.log("File cleanup failed:", err.message));
+    }
     res.status(201).json({
       user: { ...newUser._doc, password: undefined },
       message: "You are registered",
