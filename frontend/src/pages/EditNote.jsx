@@ -71,20 +71,22 @@ const EditNotePage = () => {
           />
           <span className="text-muted-foreground">Pin this note</span>
         </label>
-        <button
-          type="submit"
-          disabled={isUpdating}
-          className="bg-primary text-primary-foreground px-6 py-2 rounded hover:bg-blue-700 transition"
-        >
-          {isUpdating ? "Updating..." : "Update Note"}
-        </button>
-        <button
-          type="button"
-          className="bg-muted-foreground text-main-foreground px-6 py-2 rounded "
-          onClick={() => navigate("/notes")}
-        >
-          Go Back
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="submit"
+            disabled={isUpdating}
+            className="bg-primary text-primary-foreground px-6 py-2 rounded hover:bg-blue-700 transition"
+          >
+            {isUpdating ? "Updating..." : "Update Note"}
+          </button>
+          <button
+            type="button"
+            className="bg-muted-foreground text-main-foreground px-6 py-2 rounded "
+            onClick={() => navigate("/notes")}
+          >
+            Go Back
+          </button>
+        </div>
       </form>
     </div>
   );
