@@ -12,8 +12,8 @@ export const userRegister = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     const file = req?.file;
-    const sanitizedName = sanitizeInput(name);
-    const sanitizedEmail = sanitizeInput(email);
+    const sanitizedName = sanitizeInput(name).trim();
+    const sanitizedEmail = sanitizeInput(email)?.trim().toLowerCase();
     if (!sanitizedName.trim() || !sanitizedEmail.trim() || !password)
       return sendError(400, "All fields are required");
     if (password.length < 6)
@@ -62,7 +62,7 @@ export const userRegister = async (req, res, next) => {
 export const userLogin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const sanitizedEmail = sanitizeInput(email);
+    const sanitizedEmail = sanitizeInput(email)?.trim().toLowerCase();
     if (!sanitizedEmail.trim() || !password.trim())
       return sendError(400, "All fileds are required");
     const user = await User.findOne({ email: sanitizedEmail });
@@ -87,7 +87,7 @@ export const userUpdate = async (req, res, next) => {
     const file = req.file;
 
     const sanitizedName = sanitizeInput(name)?.trim();
-    const sanitizedEmail = sanitizeInput(email)?.trim();
+    const sanitizedEmail = sanitizeInput(email)?.trim().toLowerCase();
 
     if (!sanitizedName && !sanitizedEmail && !file)
       return sendError(400, "Please provide at least one field to update");
@@ -174,6 +174,8 @@ export const resetPassword = async (req, res, next) => {
     const { token, newPassword } = req.body;
 
     if (!token || !newPassword) return sendError(400, "Missing fields");
+    if (newPassword.length < 6)
+      sendError(400, "Password must have atleast 6 characters");
 
     const decoded = jwt.verify(token, ENV.JWT_RESET_SECRET);
     const user = await User.findById(decoded.userId);
@@ -183,10 +185,15 @@ export const resetPassword = async (req, res, next) => {
     user.password = hashedPassword;
     await user.save();
 
-    res.status(200).json({ message: "Password updated successfully" });
+    res
+      .status(200)
+      .clearCookie("token")
+      .json({ message: "Password updated successfully" });
   } catch (error) {
     if (error.name === "TokenExpiredError")
-      return res.status(400).json({ error: "Reset token expired" });
+      return res
+        .status(400)
+        .json({ message: "Reset token expired, Try again" });
     next(error);
   }
 };
