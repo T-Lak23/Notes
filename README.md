@@ -1,7 +1,4 @@
-Got it! I’ll create a complete `README.md` for your project, including backend and frontend setup, environment variables, and instructions. I’ll make it clear, structured, and beginner-friendly. Here’s a draft based on your previous chats and stack (MERN + Zustand + Vite frontend):
-
-````markdown
-# Project Name
+# Quick Notes
 
 A full-stack **MERN (MongoDB, Express, React, Node.js)** application with user authentication, note management, and more. Frontend is built using **Vite + React**, and backend is an **Express** server connected to **MongoDB**. Zustand is used for state management on the frontend.
 
@@ -49,6 +46,7 @@ A full-stack **MERN (MongoDB, Express, React, Node.js)** application with user a
 git clone https://github.com/T-Lak23/Notes.git
 cd Notes
 ```
+
 ````
 
 ---
@@ -203,6 +201,4 @@ MIT License
 
 ---
 
-```
-
-```
+````
